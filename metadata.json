@@ -1,0 +1,5 @@
+{
+  "name": "Rental Invoice Calculator",
+  "description": "A simple app to calculate and generate monthly rental invoices, including rent, electricity, water, management fees, and parking fees.",
+  "requestFramePermissions": []
+}
