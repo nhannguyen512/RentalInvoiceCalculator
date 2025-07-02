@@ -6,15 +6,16 @@ interface CurrencyInputProps {
   value: string;
   onChange: (value: string) => void;
   icon: React.ReactNode;
+  currency: 'VND' | 'USD';
 }
 
-export const CurrencyInput: React.FC<CurrencyInputProps> = ({ id, label, value, onChange, icon }) => {
+export const CurrencyInput: React.FC<CurrencyInputProps> = ({ id, label, value, onChange, icon, currency }) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const numericValue = e.target.value.replace(/[^0-9]/g, '');
     onChange(numericValue);
   };
 
-  const formattedValue = value ? new Intl.NumberFormat('vi-VN').format(Number(value)) : '';
+  const formattedValue = value ? new Intl.NumberFormat('en-US').format(Number(value)) : '';
 
   return (
     <div>
@@ -36,7 +37,7 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({ id, label, value, 
           className="w-full pl-12 pr-16 py-3 text-lg bg-gray-50 border-2 text-gray-900 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition duration-200 outline-none"
           autoComplete="off"
         />
-        <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-500 text-sm font-semibold">VNĐ</span>
+        <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-500 text-sm font-semibold">{currency}</span>
       </div>
     </div>
   );

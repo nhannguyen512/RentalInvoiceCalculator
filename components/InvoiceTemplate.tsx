@@ -1,5 +1,6 @@
 import React from 'react';
 import { ICONS } from '../constants';
+import { translations } from '../translations';
 
 interface InvoiceTemplateProps {
   rent: number;
@@ -7,8 +8,13 @@ interface InvoiceTemplateProps {
   waterBill: number;
   electricityBill: number;
   parkingFee: number;
+  internetFee: number;
   total: number;
   formatCurrency: (value: number) => string;
+  language: 'en' | 'vi';
+  contactName: string;
+  contactPhone: string;
+  footerMessage: string;
 }
 
 export const InvoiceTemplate: React.FC<InvoiceTemplateProps> = ({ 
@@ -17,11 +23,18 @@ export const InvoiceTemplate: React.FC<InvoiceTemplateProps> = ({
   waterBill, 
   electricityBill,
   parkingFee, 
+  internetFee,
   total,
-  formatCurrency 
+  formatCurrency,
+  language,
+  contactName,
+  contactPhone,
+  footerMessage
 }) => {
+  const t = translations[language];
+  
   const today = new Date();
-  const formattedDate = today.toLocaleDateString('en-US', {
+  const formattedDate = today.toLocaleDateString(language === 'vi' ? 'vi-VN' : 'en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -41,8 +54,8 @@ export const InvoiceTemplate: React.FC<InvoiceTemplateProps> = ({
     <div className="bg-white p-4 sm:p-6 font-sans">
       <header className="flex justify-between items-start pb-4 border-b-2 border-gray-800">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">RENTAL INVOICE</h1>
-          <p className="text-gray-500 mt-1 text-sm">Date: {formattedDate}</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{t.invoiceTitle}</h1>
+          <p className="text-gray-500 mt-1 text-sm">{t.date} {formattedDate}</p>
         </div>
         <div className="text-blue-600">
           {ICONS.invoice}
@@ -50,13 +63,14 @@ export const InvoiceTemplate: React.FC<InvoiceTemplateProps> = ({
       </header>
 
       <main className="mt-4">
-        <h2 className="text-lg font-semibold text-gray-700 mb-1">Payment Details</h2>
+        <h2 className="text-lg font-semibold text-gray-700 mb-1">{t.paymentDetails}</h2>
         <div className="space-y-0.5">
-          {renderInvoiceRow("Rent for 2 months", rent)}
-          {renderInvoiceRow("Management Fee", managementFee)}
-          {renderInvoiceRow("Water Bill", waterBill)}
-          {renderInvoiceRow("Electricity Bill", electricityBill)}
-          {renderInvoiceRow("Parking Fee", parkingFee)}
+          {renderInvoiceRow(t.houseRent, rent)}
+          {renderInvoiceRow(t.managementFee, managementFee)}
+          {renderInvoiceRow(t.waterBill, waterBill)}
+          {renderInvoiceRow(t.electricityBill, electricityBill)}
+          {renderInvoiceRow(t.parkingFee, parkingFee)}
+          {renderInvoiceRow(t.internetFee, internetFee)}
         </div>
       </main>
 
@@ -64,13 +78,13 @@ export const InvoiceTemplate: React.FC<InvoiceTemplateProps> = ({
          <div className="border-t-2 border-dashed border-gray-300 my-4"></div>
         <div className="flex justify-end items-center">
           <div className="text-right">
-            <p className="text-base font-semibold text-gray-600">TOTAL</p>
+            <p className="text-base font-semibold text-gray-600">{t.total}</p>
             <p className="text-2xl sm:text-3xl font-bold text-blue-600 mt-1">{formatCurrency(total)}</p>
           </div>
         </div>
         <div className="mt-6 text-center text-gray-500 text-xs">
-          <p>Thank you for your prompt payment.</p>
-          <p>If you have any questions, please contact Phuong Duy Tran at 0987484464</p>
+          <p>{footerMessage}</p>
+          <p>{t.contactQuestion} {contactName} {t.at} {contactPhone}</p>
         </div>
       </footer>
     </div>
