@@ -10,7 +10,6 @@ export const translations = {
 
         // Form text
         title: "Invoice Calculator",
-        subtitle: "Enter costs to see the invoice update in real-time.",
         total: "Total:",
         createInvoice: "Create Invoice",
 
@@ -57,8 +56,7 @@ export const translations = {
         internetFee: "Phí internet",
 
         // Form text
-        title: "Máy tính hóa đơn",
-        subtitle: "Nhập chi phí để xem hóa đơn cập nhật theo thời gian thực.",
+        title: "Tính tiền thuê nhà",
         total: "Tổng cộng:",
         createInvoice: "Tạo hóa đơn",
 
@@ -73,7 +71,7 @@ export const translations = {
         generating: "Đang tạo...",
         generatePdf: "Tạo PDF",
         settings: "Cài đặt",
-        backToCalculator: "← Quay lại máy tính",
+        backToCalculator: "← Quay lại hóa đơn",
 
         // Settings
         settingsTitle: "Cài đặt",

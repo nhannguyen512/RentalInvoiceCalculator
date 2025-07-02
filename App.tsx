@@ -200,7 +200,6 @@ const App: React.FC = () => {
             <div className="p-8">
               <div className="text-center mb-8">
                 <h1 className="text-3xl font-bold text-gray-800">{t.title}</h1>
-                <p className="text-gray-500 mt-2 text-sm">{t.subtitle}</p>
               </div>
 
               <div className="space-y-5">

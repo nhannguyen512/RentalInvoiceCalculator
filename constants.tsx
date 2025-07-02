@@ -1,5 +1,3 @@
-import React from 'react';
-
 const iconClass = "w-6 h-6";
 
 export const ICONS = {
