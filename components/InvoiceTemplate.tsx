@@ -12,8 +12,6 @@ interface InvoiceTemplateProps {
   total: number;
   formatCurrency: (value: number) => string;
   language: 'en' | 'vi';
-  contactName: string;
-  contactPhone: string;
   footerMessage: string;
 }
 
@@ -27,8 +25,6 @@ export const InvoiceTemplate: React.FC<InvoiceTemplateProps> = ({
   total,
   formatCurrency,
   language,
-  contactName,
-  contactPhone,
   footerMessage
 }) => {
   const t = translations[language];
@@ -84,7 +80,6 @@ export const InvoiceTemplate: React.FC<InvoiceTemplateProps> = ({
         </div>
         <div className="mt-6 text-center text-gray-500 text-xs">
           <p>{footerMessage}</p>
-          <p>{t.contactQuestion} {contactName} {t.at} {contactPhone}</p>
         </div>
       </footer>
     </div>

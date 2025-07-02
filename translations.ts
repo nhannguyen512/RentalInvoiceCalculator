@@ -39,7 +39,7 @@ export const translations = {
         enterFooterMessage: "Enter footer message",
 
         // Footer
-        defaultFooterMessage: "Thank you for your prompt payment.",
+        defaultFooterMessage: "Thank you for your prompt payment. If you have any questions, please contact Phuong Duy Tran at 0987484464",
         contactQuestion: "If you have any questions, please contact",
         at: "at",
 
@@ -86,7 +86,7 @@ export const translations = {
         enterFooterMessage: "Nhập lời nhắn cuối",
 
         // Footer
-        defaultFooterMessage: "Cảm ơn bạn đã thanh toán đúng hạn.",
+        defaultFooterMessage: "Cảm ơn bạn đã thanh toán đúng hạn. Nếu có thắc mắc, vui lòng liên hệ Phuong Duy Tran tại 0987484464",
         contactQuestion: "Nếu có thắc mắc, vui lòng liên hệ",
         at: "tại",
 

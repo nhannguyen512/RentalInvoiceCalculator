@@ -42,8 +42,6 @@ const App: React.FC = () => {
   // Config states
   const [language, setLanguage] = useState<'en' | 'vi'>('en');
   const [currency, setCurrency] = useState<'VND' | 'USD'>('VND');
-  const [contactName, setContactName] = useState<string>('Phuong Duy Tran');
-  const [contactPhone, setContactPhone] = useState<string>('0987484464');
   const [footerMessage, setFooterMessage] = useState<string>('Thank you for your prompt payment.');
 
   const parseValue = (value: string): number => {
@@ -65,7 +63,9 @@ const App: React.FC = () => {
 
   const handleProceedToReview = () => {
     setView('review');
-    window.scrollTo(0, 0);
+    if (window.innerWidth >= 1024) {
+      window.scrollTo(0, 0);
+    }
   };
   
   const handleGoBackToForm = () => {
@@ -74,10 +74,14 @@ const App: React.FC = () => {
 
   const handleGoToConfig = () => {
     setView('config');
+    if (window.innerWidth >= 1024) {
+      window.scrollTo(0, 0);
+    }
   };
 
   const handleGoBackFromConfig = () => {
     setView('form');
+    window.scrollTo(0, 0);
   };
 
   const handleGenerateImage = async () => {
@@ -158,8 +162,6 @@ const App: React.FC = () => {
         if (typeof config === 'object' && config) {
           if (config.language) setLanguage(config.language);
           if (config.currency) setCurrency(config.currency);
-          if (config.contactName) setContactName(config.contactName);
-          if (config.contactPhone) setContactPhone(config.contactPhone);
           if (config.footerMessage) setFooterMessage(config.footerMessage);
         }
       } catch {}
@@ -184,18 +186,16 @@ const App: React.FC = () => {
     const config = {
       language,
       currency,
-      contactName,
-      contactPhone,
       footerMessage
     };
     localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(config));
-  }, [language, currency, contactName, contactPhone, footerMessage], 1000);
+  }, [language, currency, footerMessage], 1000);
 
   return (
     <div className="min-h-screen p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto lg:flex lg:gap-8">
         {/* --- FORM SECTION (Left Column on Desktop) --- */}
-        <div className={`w-full lg:w-5/12 lg:max-w-md ${view === 'review' ? 'hidden' : 'block'} lg:block`}>
+        <div className={`w-full lg:w-5/12 lg:max-w-md ${view === 'review' || view === 'config' ? 'hidden' : 'block'} lg:block`}>
           <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl shadow-gray-300/20 overflow-hidden sticky top-8">
             <div className="p-8">
               <div className="text-center mb-8">
@@ -230,7 +230,17 @@ const App: React.FC = () => {
         </div>
 
         {/* --- INVOICE REVIEW SECTION (Right Column on Desktop) --- */}
-        <div className={`w-full lg:w-7/12 mt-8 lg:mt-0 ${view === 'form' ? 'hidden' : 'block'} lg:block`}>
+        <div className={`w-full lg:w-7/12 mt-8 lg:mt-0 ${view === 'form' || view === 'config' ? 'hidden' : 'block'} lg:block`}>
+          {/* Desktop Settings Button */}
+          <div className="hidden lg:flex lg:justify-end lg:mb-4">
+            <button
+              onClick={handleGoToConfig}
+              className="text-blue-600 hover:text-blue-800 text-sm font-medium underline flex items-center gap-1"
+            >
+              {ICONS.settings}
+              {t.settings}
+            </button>
+          </div>
           <div className="p-4 bg-white rounded-2xl shadow-lg">
               <div ref={invoiceRef}>
                 <InvoiceTemplate 
@@ -243,8 +253,6 @@ const App: React.FC = () => {
                     total={total}
                     formatCurrency={formatCurrency}
                     language={language}
-                    contactName={contactName}
-                    contactPhone={contactPhone}
                     footerMessage={footerMessage}
                 />
               </div>
@@ -315,8 +323,8 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        {/* --- CONFIG SECTION --- */}
-        <div className={`w-full ${view === 'config' ? 'block' : 'hidden'}`}>
+        {/* --- DESKTOP CONFIG SECTION --- */}
+        <div className={`w-full lg:w-7/12 mt-8 lg:mt-0 ${view === 'config' ? 'lg:block' : 'hidden'}`}>
           <div className="max-w-2xl mx-auto">
             <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl shadow-gray-300/20 overflow-hidden">
               <div className="p-8">
@@ -356,32 +364,73 @@ const App: React.FC = () => {
                     </select>
                   </div>
 
-                  {/* Contact Name */}
+                  {/* Footer Message */}
                   <div>
                     <label className="text-sm font-medium text-gray-700 ml-1 mb-2 block">
-                      {t.contactName}
+                      {t.footerMessage}
                     </label>
-                    <input
-                      type="text"
-                      value={contactName}
-                      onChange={(e) => setContactName(e.target.value)}
-                      className="w-full p-3 text-lg bg-gray-50 border-2 text-gray-900 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition duration-200 outline-none"
-                      placeholder={t.enterContactName}
+                    <textarea
+                      value={footerMessage}
+                      onChange={(e) => setFooterMessage(e.target.value)}
+                      rows={3}
+                      className="w-full p-3 text-lg bg-gray-50 border-2 text-gray-900 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition duration-200 outline-none resize-none"
+                      placeholder={t.enterFooterMessage}
                     />
                   </div>
+                </div>
 
-                  {/* Contact Phone */}
+                <div className="mt-8">
+                  <button
+                    onClick={handleGoBackFromConfig}
+                    className="w-full bg-blue-600 text-white font-bold py-3.5 px-4 rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-300 ease-in-out transform hover:-translate-y-0.5 shadow-lg flex items-center justify-center text-lg gap-2"
+                  >
+                    {t.backToCalculator}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* --- CONFIG SECTION --- */}
+        <div className={`w-full ${view === 'config' ? 'block' : 'hidden'} hidden lg:hidden`}>
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl shadow-gray-300/20 overflow-hidden">
+              <div className="p-8">
+                <div className="text-center mb-8">
+                  <h1 className="text-3xl font-bold text-gray-800">{t.settingsTitle}</h1>
+                  <p className="text-gray-500 mt-2 text-sm">{t.settingsSubtitle}</p>
+                </div>
+
+                <div className="space-y-6">
+                  {/* Language Selection */}
                   <div>
                     <label className="text-sm font-medium text-gray-700 ml-1 mb-2 block">
-                      {t.contactPhone}
+                      {t.language}
                     </label>
-                    <input
-                      type="text"
-                      value={contactPhone}
-                      onChange={(e) => setContactPhone(e.target.value)}
+                    <select
+                      value={language}
+                      onChange={(e) => setLanguage(e.target.value as 'en' | 'vi')}
                       className="w-full p-3 text-lg bg-gray-50 border-2 text-gray-900 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition duration-200 outline-none"
-                      placeholder={t.enterPhoneNumber}
-                    />
+                    >
+                      <option value="en">English</option>
+                      <option value="vi">Tiếng Việt</option>
+                    </select>
+                  </div>
+
+                  {/* Currency Selection */}
+                  <div>
+                    <label className="text-sm font-medium text-gray-700 ml-1 mb-2 block">
+                      {t.currency}
+                    </label>
+                    <select
+                      value={currency}
+                      onChange={(e) => setCurrency(e.target.value as 'VND' | 'USD')}
+                      className="w-full p-3 text-lg bg-gray-50 border-2 text-gray-900 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition duration-200 outline-none"
+                    >
+                      <option value="VND">VND</option>
+                      <option value="USD">USD</option>
+                    </select>
                   </div>
 
                   {/* Footer Message */}
